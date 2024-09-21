@@ -6,20 +6,14 @@ use Exception;
 
 class HomeController
 {
-    protected $property1;
-
-    public function __construct($property1 = null)
+    
+    public function test() 
     {
-        $this->property1 = $property1;
+        return "Test page";
     }
 
-    public function getProperty1()
+    public function contact() 
     {
-        return $this->property1;
-    }
-
-    public function setProperty1($property1)
-    {
-        $this->property1 = $property1;
+        return "Contact page";
     }
 }

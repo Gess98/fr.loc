@@ -7,6 +7,8 @@ $app->router->add('/', function() {
 }, ['POST', 'get']);
 
 $app->router->get('/test', [\App\Controllers\HomeController::class, 'test']);
-$app->router->post('/contact', [\App\Controllers\ContactController::class, 'test']);
+$app->router->post('/contact', [\App\Controllers\HomeController::class, 'contact']);
 
-dump($app->router->getRoutes());
+$app->router->get('/post/(?P<slug>[a-z0-9-]+)/?', function() {
+    return '<p>Some post</p>';
+});

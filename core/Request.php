@@ -49,4 +49,19 @@ class Request
     {
         return $_POST[$name] ?? $defaul;
     }
+
+    // Получение пути   
+    public function getPath(): string
+    {
+        return $this->removeQueryString();
+    }
+
+    protected function removeQueryString(): string
+    {
+        if($this->uri) {
+            $params = explode('?', $this->uri);
+            return trim($params[0], "/");
+        }
+        return '';
+    }
 }

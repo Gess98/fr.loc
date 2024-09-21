@@ -24,7 +24,9 @@ class Application
     public function __construct()
     {
         self::$app = $this;
-        $this->uri = $_SERVER['QUERY_STRING'];
+        // dump($_SERVER['QUERY_STRING']);
+        // dump($_SERVER['REQUEST_URI']);
+        $this->uri = $_SERVER['REQUEST_URI'];
         $this->request = new Request($this->uri);
         $this->response = new Response();
         $this->router = new Router($this->request, $this->response);
