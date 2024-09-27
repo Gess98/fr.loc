@@ -18,19 +18,20 @@ class Application
     // экземпляр класса Router
     public Router $router;
 
+    // экземпляр класса View
+    public View $view;
+
     // экземпляр класса Application
     public static Application $app;
 
     public function __construct()
     {
         self::$app = $this;
-        // dump($_SERVER['QUERY_STRING']);
-        // dump($_SERVER['REQUEST_URI']);
         $this->uri = $_SERVER['REQUEST_URI'];
         $this->request = new Request($this->uri);
         $this->response = new Response();
         $this->router = new Router($this->request, $this->response);
-        // var_dump($this->uri);
+        $this->view = new View(LAYOUT);
     }
 
     public function run():void
