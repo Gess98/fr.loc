@@ -64,4 +64,18 @@ class Request
         }
         return '';
     }
+
+    // Получение данных из массива POST или GET
+    public function getData(): array
+    {
+        $data = [];
+        $request_data = $this->isPost() ? $_POST : $_GET;
+        foreach ($request_data as $k => $v) {
+            if(is_string($v)) {
+                $v = trim($v);
+            }
+            $data[$k] = $v;
+        }
+        return $data;
+    }
 }

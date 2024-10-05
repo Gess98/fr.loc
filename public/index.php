@@ -18,10 +18,4 @@ $app = new PHPFramework\Application();
 require_once CONFIG . "/routes.php";
 $app->run();
 
-
-// dump($app->request->getMethod());
-// dump($app->request->isAjax());
-// dump($app->request->get('page', 10));
-// dump(request()->get('page'));
-
-dump("Time" . microtime(true) - $start_framework);
+// dump("Time" . microtime(true) - $start_framework);
