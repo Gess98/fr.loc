@@ -13,12 +13,20 @@ class UserController extends BaseController
 
     public function store()
     {
-        $model = new User;
+        $model = new User();
         $model->loadData();
-        dump($model->attributes);
-        dump($model->validate());
-        dump($model->getErrors());
-        dd($_POST);
+        if(!$model->validate()) {
+            session()->setFlash('error', 'Validation errors');
+            session()->set('form_errors', $model->getErrors());
+            session()->set('form_data', $model->attributes);
+        }else{
+            session()->setFlash('success', 'Successfully validation');
+        }
+        response()->redirect('/register');
+        // dump($model->attributes);
+        // dump($model->validate());
+        // dump($model->getErrors());
+        // dd($_POST);
     }
 
     public function login()

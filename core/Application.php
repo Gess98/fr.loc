@@ -21,6 +21,9 @@ class Application
     // экземпляр класса View
     public View $view;
 
+    // экземпляр класса Session
+    public Session $session;
+
     // экземпляр класса Application
     public static Application $app;
 
@@ -32,6 +35,7 @@ class Application
         $this->response = new Response();
         $this->router = new Router($this->request, $this->response);
         $this->view = new View(LAYOUT);
+        $this->session = new Session();
     }
 
     public function run():void
