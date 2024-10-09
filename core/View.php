@@ -32,7 +32,7 @@ class View
         }
 
         if (false === $layout) {
-            return $this->content;
+            return $content;
         }
 
         // подключение шаблона

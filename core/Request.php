@@ -39,15 +39,15 @@ class Request
     }
 
     // Получение чего-то из массива get
-    public function get($name, $defaul = null): ?string
+    public function get($name, $default = null): ?string
     {
-        return $_GET[$name] ?? $defaul;
+        return $_GET[$name] ?? $default;
     }
 
     // Получение чего-то из массива post
-    public function post($name, $defaul = null): ?string
+    public function post($name, $default = null): ?string
     {
-        return $_POST[$name] ?? $defaul;
+        return $_POST[$name] ?? $default;
     }
 
     // Получение пути   

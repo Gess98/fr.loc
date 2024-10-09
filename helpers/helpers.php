@@ -92,3 +92,15 @@ function h($str): string
 {
     return htmlspecialchars($str, ENT_QUOTES);
 }
+
+// Добавление поля в форму для проверки csrf token
+function get_csrf_field(): string
+{
+    return '<input type="hidden" name="csrf_token" value="' . session()->get('csrf_token') . '">';
+}
+
+// Meta csrf token
+function get_csrf_meta(): string
+{
+    return '<meta name="csrf-token" content="' . session()->get('csrf_token') . '">';
+}
