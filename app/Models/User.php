@@ -2,18 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use PHPFramework\Model;
 
 class User extends Model
 {
-    protected $table = 'users';
+    protected string $table = 'users';
 
-    public $timestamps = true;
+    public bool $timestamps = false;
 
     protected array $loaded = ['name', 'email', 'password', 'confirmPassword'];
 
-    protected $fillable = ['name', 'email', 'password'];
+    protected array $fillable = ['name', 'email', 'password'];
 
     protected array $rules = [
         'required' => ['name', 'email', 'password', 'confirmPassword'],
@@ -33,8 +32,4 @@ class User extends Model
         'confirmPassword' => 'Подтверждение пароля'
     ];
 
-    public function phones(): HasMany
-    {
-        return $this->hasMany(Phone::class);
-    }
 }

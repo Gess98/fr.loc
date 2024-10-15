@@ -1,1 +1,8 @@
-[2024-10-14 10:40:29] Db Error: SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)
+[2024-10-15 14:18:38] Error: Division by zero
+File: D:\OSPanel\home\fr.loc\app\Controllers\UserController.php
+Line: 13
+--------------------
+[2024-10-15 14:18:45] Error: Division by zero
+File: D:\OSPanel\home\fr.loc\app\Controllers\UserController.php
+Line: 13
+--------------------

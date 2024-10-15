@@ -9,9 +9,8 @@
         "php": ">=8.0",
         "symfony/var-dumper": "^7.1",
         "vlucas/valitron": "^1.4",
-        "illuminate/database": "^11.27",
-        "illuminate/support": "^11.27",
-        "laravel/serializable-closure": "^1.3"
+        "ext-pdo": "*",
+        "filp/whoops": "^2.16"
     }
 
 }
