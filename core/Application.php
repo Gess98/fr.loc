@@ -2,6 +2,8 @@
 
 namespace PHPFramework;
 
+use Illuminate\Database\Capsule\Manager as Capsule;
+
 // Класс Application инициализирует все классы приложения и предоставляет объекты и их методы
 
 class Application
@@ -24,6 +26,9 @@ class Application
     // экземпляр класса Session
     public Session $session;
 
+    // экземпляр класса Database
+    public Database $db;
+
     // экземпляр класса Application
     public static Application $app;
 
@@ -37,6 +42,8 @@ class Application
         $this->view = new View(LAYOUT);
         $this->session = new Session();
         $this->generateCsrfToken();
+        // $this->setDbConnection();
+        $this->db = new Database();
     }
 
     public function run():void
@@ -50,6 +57,15 @@ class Application
         if (!session()->has('csrf_token')) {
             session()->set('csrf_token', md5(uniqid(mt_rand(), true)));
         }
+    }
+
+    // Метод для установки подключения БД
+    public function setDbConnection()
+    {
+        $capsule = new Capsule();
+        $capsule->addConnection(DB_SETTINGS);
+        $capsule->setAsGlobal();
+        $capsule->bootEloquent();
     }
 
 }

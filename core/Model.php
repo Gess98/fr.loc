@@ -4,12 +4,13 @@ namespace PHPFramework;
 
 use Valitron\Validator;
 
-class Model
+abstract class Model extends \Illuminate\Database\Eloquent\Model
 {
+    protected array $loaded = [];
     // Поля для заполнения
-    protected array $fillable = [];
+    protected $fillable = [];
     // Поля для заполнения с данными
-    public array $attributes = [];
+    public $attributes = [];
     // Правила валидации
     protected array $rules = [];
     // Названия полей, которые будут выводиться пользователб после валидации
@@ -18,10 +19,20 @@ class Model
     protected array $errors = [];
 
 
+    public function save(array $options = [])
+    {
+        foreach ($this->attributes as $k => $v) {
+            if (!in_array($k, $this->fillable)) {
+                unset($this->attributes[$k]);
+            }
+        }
+        return parent::save($options);
+    }
+
     public function loadData(): void 
     {
         $data = request()->getData();
-        foreach($this->fillable as $field) {
+        foreach($this->loaded as $field) {
             if(isset($data[$field])) {
                 $this->attributes[$field] = $data[$field];
             } else {

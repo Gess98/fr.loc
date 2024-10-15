@@ -18,6 +18,12 @@ function session(): PHPFramework\Session
     return app()->session;
 }
 
+// Возвращает экземпляр класса Db
+function db(): PHPFramework\Database
+{
+    return app()->db;
+}
+
 // Возвращает экземпляр класса Response
 function response(): PHPFramework\Response
 {
