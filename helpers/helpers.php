@@ -110,3 +110,9 @@ function get_csrf_meta(): string
 {
     return '<meta name="csrf-token" content="' . session()->get('csrf_token') . '">';
 }
+
+// Проверка залогирован пользователь или нет
+function check_auth():bool
+{
+    return false;
+}

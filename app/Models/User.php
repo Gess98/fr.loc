@@ -22,6 +22,10 @@ class User extends Model
         ],
         'equals' => [
             ['password', 'confirmPassword']
+        ],
+        'unique' => [
+            ['name', 'users,name'],
+            ['email', 'users,email']
         ]
     ];
 

@@ -4,12 +4,13 @@ namespace App\Controllers;
 
 use App\Models\User;
 use PDOException;
+use PHPFramework\Pagination;
 
 class UserController extends BaseController
 {
     public function register()
     {
-        db()->query("insert into phones (user_id, phone) values (?,?)", [23, 22799]);
+        // db()->query("insert into phones (user_id, phone) values (?,?)", [23, 22799]);
         // dump(1/0);
         // try {
         //     db()->beginTransaction();
@@ -48,5 +49,21 @@ class UserController extends BaseController
     public function login()
     {
         return view('user/login', ['title' => 'Login page']);
+    }
+
+    public function index()
+    {
+        // дописать метод, который рассчитываает количество строк в таблице по названию таблицы
+        $user_cnt = db()->query("select count(*) from users")->getColumn();
+        $limit = PAGINATION_SETTINGS['perPage'];
+        $pagination = new Pagination($user_cnt);
+
+        $users = db()->query("select * from users limit $limit offset {$pagination->getOffset()}")->get();
+        return view('user/index', 
+        [
+            'title' => 'Users',
+            'users' => $users,
+            'pagination' => $pagination,
+        ]);
     }
 }

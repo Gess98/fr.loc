@@ -38,7 +38,7 @@ class Router
         $this->routes[] = [
             'path' => "/$path",
             'callback' => $callback,
-            'middleware' => null,
+            'middleware' => [],
             'method' => $method,
             'needCsrfToken' => true
         ];
@@ -103,6 +103,16 @@ class Router
                     }
                 }
 
+                // проверка на наличие middleware
+                if($route['middleware']) {
+                    foreach($route['middleware'] as $item) {
+                        $middleware = MIDDLEWARE[$item] ?? false;
+                        if($middleware) {
+                            (new $middleware)->handle();
+                        }
+                    }
+                }
+
                 foreach ($matches as $k => $v)  {
                     if(is_string($k)) {
                         $this->route_params[$k] = $v;
@@ -128,5 +138,12 @@ class Router
     public function checkCsrfToken(): bool
     {
         return request()->post('csrf_token') && (request()->post('csrf_token') == session()->get('csrf_token'));
+    }
+
+    // метод Middleware
+    public function middleware(array $middleware): self
+    {
+        $this->routes[array_key_last($this->routes)]['middleware'] = $middleware;
+        return $this;
     }
 }

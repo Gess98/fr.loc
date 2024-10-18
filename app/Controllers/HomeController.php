@@ -10,6 +10,11 @@ class HomeController extends BaseController
         return view('home', ['title' => 'Home page']);
     }
 
+    public function dashboard() 
+    {
+        return view('dashboard', ['title' => 'Dashboard page']);
+    }
+
     public function test() 
     {
         app()->view->render('test', ['name' => 'John']);

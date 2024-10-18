@@ -86,6 +86,14 @@ abstract class Model
             $labels = $this->labels;
         }
 
+        Validator::addRule('unique', function($field, $value, array $params, array $fields) {
+            // Получение параметров для запроса
+            $data = explode(',', $params[0]);
+            // Инвертирует результат в false, если в базе есть пользователь и наоборот, если нет
+            return !(db()->findOne($data[0], $value, $data[1]));
+            // dd($field, $value, $params, $data, $user);
+        }, 'Must be unique');
+
         Validator::langDir(WWW . '/lang');
         Validator::lang('ru');
         $validator = new Validator($data);
