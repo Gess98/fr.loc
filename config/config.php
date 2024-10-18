@@ -17,6 +17,8 @@ const CORE = ROOT . "/core";
 const VIEWS = APP . "/Views";
 // Константа, которая возвращает путь к файлу с ошибками
 const ERROR_LOGS = ROOT . "/tmp/error.log";
+// Константа, которая возвращает путь к папке cache
+const CACHE = ROOT . "/tmp/cache";
 // Константа, которая возвращает шаблон
 const LAYOUT = 'default';
 // Константа, которая возвращает URL сайта

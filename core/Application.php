@@ -26,11 +26,17 @@ class Application
     // экземпляр класса Session
     public Session $session;
 
+    // экземпляр класса Cache
+    public Cache $cache;
+
     // экземпляр класса Database
     public Database $db;
 
     // экземпляр класса Application
     public static Application $app;
+
+    // Свойство для хранения данных
+    protected array $container = [];
 
     public function __construct()
     {
@@ -41,13 +47,20 @@ class Application
         $this->router = new Router($this->request, $this->response);
         $this->view = new View(LAYOUT);
         $this->session = new Session();
+        $this->cache = new Cache();
         $this->generateCsrfToken();
-        // $this->setDbConnection();
         $this->db = new Database();
     }
 
     public function run():void
     {
+        // Кэширование всего сайта
+        // $page = $this->cache->get($this->request->rawUri);
+        // if (!$page) {
+        //     $page = $this->router->dispatch();
+        //     $this->cache->set($this->request->rawUri, $page);
+        // }
+        // echo $page;
         echo $this->router->dispatch();
     }
 
@@ -59,13 +72,17 @@ class Application
         }
     }
 
-    // Метод для установки подключения БД
-    public function setDbConnection()
+    // сеттер для $container
+    public function set($key, $value): void
     {
-        $capsule = new Capsule();
-        $capsule->addConnection(DB_SETTINGS);
-        $capsule->setAsGlobal();
-        $capsule->bootEloquent();
+        $this->container[$key] = $value;
+    }
+
+    // геттер для $container
+    public function get($key, $default = null)
+    {
+        // Если в контейнере есть элемент с заданным ключем, то вернет его, если нет, то значение по дефолту
+        return $this->container[$key] ?? $default;
     }
 
 }

@@ -53,12 +53,30 @@ class UserController extends BaseController
 
     public function index()
     {
+        // Запрос данных для кэширования
+        if ($page = cache()->get(request()->rawUri)) {
+            return $page;
+        }
+
         // дописать метод, который рассчитываает количество строк в таблице по названию таблицы
         $user_cnt = db()->query("select count(*) from users")->getColumn();
         $limit = PAGINATION_SETTINGS['perPage'];
         $pagination = new Pagination($user_cnt);
 
         $users = db()->query("select * from users limit $limit offset {$pagination->getOffset()}")->get();
+        
+        // Кэширование страниц пользователей
+        // $page = view('user/index', 
+        // [
+        //     'title' => 'Users',
+        //     'users' => $users,
+        //     'pagination' => $pagination,
+        // ]);
+
+        // cache()->set(request()->rawUri, $page);
+        
+        // return $page;
+
         return view('user/index', 
         [
             'title' => 'Users',

@@ -18,6 +18,12 @@ function session(): PHPFramework\Session
     return app()->session;
 }
 
+// Возвращает экземпляр класса Cache
+function cache(): PHPFramework\Cache
+{
+    return app()->cache;
+}
+
 // Возвращает экземпляр класса Db
 function db(): PHPFramework\Database
 {

@@ -8,8 +8,12 @@ class Request
 {
     public $uri;
 
+    public string $rawUri;
+
     public function __construct($uri)
     {
+        // Uri без декодирования и с концевыми слешами
+        $this->rawUri = $uri;
         // Декодирование url адреса ('+' заменяется на пробел и т.д.) и обрезание концевого слеша
         $this->uri = trim(urldecode($uri), '/');
     }
