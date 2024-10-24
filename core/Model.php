@@ -18,7 +18,7 @@ abstract class Model
     public array $attributes = [];
     // Правила валидации
     protected array $rules = [];
-    // Названия полей, которые будут выводиться пользователб после валидации
+    // Названия полей, которые будут выводиться пользователю после валидации
     protected array $labels = [];
     // Ошибки валидации
     protected array $errors = [];
@@ -27,16 +27,17 @@ abstract class Model
     // Метод отвечающий за сохранение вставки в базу данных
     public function save(): false|string
     {
-        foreach ($this->attributes as $k => $v) {
+        $attributes = $this->attributes;
+        foreach ($attributes as $k => $v) {
             if (!in_array($k, $this->fillable)) {
-                unset($this->attributes[$k]);
+                unset($attributes[$k]);
             }
         }
 
         // insert into (`f1`, `f2`) values (:f1, :f2);
         // Поля таблицы
         // Получение ключей из массива attributes
-        $fields_keys = array_keys($this->attributes);
+        $fields_keys = array_keys($attributes);
         // Пробегание по массиву $fields_keys и оборачивание каждого элемента в обратные кавычки
         $fields = array_map(fn($field) => "`{$field}`", $fields_keys);
         // Преобразование массива в строку
@@ -50,13 +51,13 @@ abstract class Model
         $placeholders = implode(',', $placeholders);
         if($this->timestamps) {
             $placeholders .= ', :created_at, :updated_at';
-            $this->attributes['created_at'] = date("Y-m-d H:i:s");
-            $this->attributes['updated_at'] = date("Y-m-d H:i:s");
+            $attributes['created_at'] = date("Y-m-d H:i:s");
+            $attributes['updated_at'] = date("Y-m-d H:i:s");
         }
 
         $query = "insert into {$this->table} ({$fields}) values ({$placeholders})";
         // Выполнение запроса
-        db()->query($query, $this->attributes);
+        db()->query($query, $attributes);
         return db()->getInsertId();
     }
 
@@ -110,5 +111,18 @@ abstract class Model
     public function getErrors(): array 
     {
         return $this->errors;
+    }
+
+    // Получение списка ошибок
+    public function listErrors(): string
+    {
+        $output = '<ul class="list-unstyled">';
+        foreach ($this->errors as $fileld_errors) {
+            foreach($fileld_errors as $error) {
+                $output .= "<li>$error</li>";
+            }
+        }
+        $output .= '</ul>';
+        return $output;
     }
 }

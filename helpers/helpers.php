@@ -24,6 +24,23 @@ function cache(): PHPFramework\Cache
     return app()->cache;
 }
 
+// Посмотреть все параметры
+function get_route_params($key, $default = ''): string
+{
+    return app()->router->route_params[$key] ?? $default;
+}
+
+// Поиск данных в массиве (двумерном)
+function array_value_search($arr, $index, $value): int|null|string
+{
+    foreach($arr as $k => $v) {
+        if($v[$index] == $value) {
+            return $k;
+        }
+    }
+    return null;
+}
+
 // Возвращает экземпляр класса Db
 function db(): PHPFramework\Database
 {
@@ -57,6 +74,28 @@ function abort($error = '', $code = '404')
 function base_url($path = ''):string
 {
     return PATH . $path;
+}
+
+// 
+function base_href($path = ''): string
+{
+    if (app()->get('lang')['base'] != 1) {
+        return PATH . '/' . app()->get('lang')['code'] . $path;
+    }
+    return PATH . $path;
+}
+
+// Возвращает url адресс без языка
+function uri_without_lang()
+{
+    $request_uri = request()->uri;
+    // Получение 2 параметров из uri путем разбиения по /
+    $request_uri = explode('/', $request_uri, 2); // en/login/еще-что-то разобьет на ['0' => 'en', '1' => 'login/еще что-то']
+    if (array_key_exists($request_uri[0], LANGS)) {
+        unset($request_uri[0]);
+    }
+    $request_uri = implode('/', $request_uri);
+    return $request_uri ? '/'. $request_uri : '';
 }
 
 // Присваивание ошибки по ключу

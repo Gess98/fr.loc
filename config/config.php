@@ -46,3 +46,27 @@ const PAGINATION_SETTINGS = [
     'maxPages' => 7,
     'tpl' => 'pagination/base'
 ];
+
+// Константа для определения мультиязычности
+const MULTILANGS = 1;
+// Константа содержащяя массив с языками
+const LANGS = [
+    'ru' => [
+        'id' => 1,
+        'code' => 'ru',
+        'title' => 'Русский',
+        'base' => 1,
+    ],
+    'en' => [
+        'id' => 2,
+        'code' => 'en',
+        'title' => 'English',
+        'base' => 0,
+    ],
+    'fr' => [
+        'id' => 3,
+        'code' => 'fr',
+        'title' => 'French',
+        'base' => 0,
+    ]
+];

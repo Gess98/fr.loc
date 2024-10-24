@@ -54,13 +54,6 @@ class Application
 
     public function run():void
     {
-        // Кэширование всего сайта
-        // $page = $this->cache->get($this->request->rawUri);
-        // if (!$page) {
-        //     $page = $this->router->dispatch();
-        //     $this->cache->set($this->request->rawUri, $page);
-        // }
-        // echo $page;
         echo $this->router->dispatch();
     }
 

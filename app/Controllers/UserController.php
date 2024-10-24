@@ -31,6 +31,25 @@ class UserController extends BaseController
     {
         $model = new User();
         $model->loadData();
+
+        if (request()->isAjax()) {
+            if (!$model->validate()) {
+                echo json_encode(['status' => 'error', 'data' => $model->listErrors()]);
+                die;
+            }
+
+            $model->attributes['password'] = password_hash($model->attributes['password'], PASSWORD_DEFAULT);
+            if ($id = $model->save()) {
+                echo json_encode(['status' => 'success', 'data' => 'Thanks for registration. Your ID: '. $id,
+                'redirect' => base_url('/login'),
+                ]);
+                session()->setFlash('success', 'Thanks for registration. Your ID: ' . $id);
+            }else {
+                echo json_encode(['status' => 'error', 'data' => 'Error registration']);
+            }
+            die;
+        }
+
         if(!$model->validate()) {
             session()->setFlash('error', 'Validation errors');
             session()->set('form_errors', $model->getErrors());
@@ -48,7 +67,19 @@ class UserController extends BaseController
 
     public function login()
     {
-        return view('user/login', ['title' => 'Login page']);
+        return view('user/login', [
+            'title' => 'Login page',
+            'styles' => [
+                base_url("/assets/css/test.css")
+            ],
+            'header_scripts' => [
+                base_url("/assets/js/test.js"),
+                base_url("/assets/js/test2.js")
+            ],
+            'footer_scripts' => [
+                base_url("/assets/js/test3.js")
+            ],
+        ]);
     }
 
     public function index()
