@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\AuthentificationUser;
 use App\Models\User;
 use PDOException;
 use PHPFramework\Pagination;
@@ -40,8 +41,8 @@ class UserController extends BaseController
 
             $model->attributes['password'] = password_hash($model->attributes['password'], PASSWORD_DEFAULT);
             if ($id = $model->save()) {
-                echo json_encode(['status' => 'success', 'data' => 'Thanks for registration. Your ID: '. $id,
-                'redirect' => base_url('/login'),
+                echo json_encode(['status' => 'success', 'data' => sprintf(__('user_store_success'), $id),
+                'redirect' => base_href('/login'),
                 ]);
                 session()->setFlash('success', 'Thanks for registration. Your ID: ' . $id);
             }else {
@@ -69,17 +70,54 @@ class UserController extends BaseController
     {
         return view('user/login', [
             'title' => 'Login page',
-            'styles' => [
-                base_url("/assets/css/test.css")
-            ],
-            'header_scripts' => [
-                base_url("/assets/js/test.js"),
-                base_url("/assets/js/test2.js")
-            ],
-            'footer_scripts' => [
-                base_url("/assets/js/test3.js")
-            ],
+            // 'styles' => [
+            //     base_url("/assets/css/test.css")
+            // ],
+            // 'header_scripts' => [
+            //     base_url("/assets/js/test.js"),
+            //     base_url("/assets/js/test2.js")
+            // ],
+            // 'footer_scripts' => [
+            //     base_url("/assets/js/test3.js")
+            // ],
         ]);
+    }
+
+    // Метод отвечающий за аутентификацию пользователя
+    public function authentification()
+    {
+        // дописать ошибку email-а
+        $email = $_POST['email'];
+        $password =  $_POST['password'];
+
+        $model = new AuthentificationUser();
+        $model->loadData();
+
+        if(!$model->validate()) {
+            session()->setFlash('error', 'Validation errors');
+            session()->set('form_errors', $model->getErrors());
+            session()->set('form_data', $model->attributes);
+            response()->redirect('/login');
+        } else {
+            // dump($email, $password);
+            // select * from users where email = 'user1@mail.com';
+            $user = db()->query("select * from users where email = ?", [$email])->getOne();
+            if (!$user) {
+                session()->setFlash('error', 'There is no user with such data');
+                response()->redirect('/login');
+            }
+            // dump(password_verify($password, $user['password']));
+            if(password_verify($password, $user['password'])) {
+                session()->set('user_id', $user['id']);
+                session()->setFlash('success', 'Welcome, ' . $user['name']);
+                response()->redirect('/dashboard');
+            } else {
+                session()->setFlash('error', 'There is no user with such data');
+                response()->redirect('/login');
+            }
+        }
+
+        
     }
 
     public function index()

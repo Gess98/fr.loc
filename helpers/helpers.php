@@ -1,6 +1,7 @@
 <?php
 
 // Возвращаеты экземпляр класса Application
+
 function app(): PHPFramework\Application 
 {
     return \PHPFramework\Application::$app;
@@ -159,5 +160,20 @@ function get_csrf_meta(): string
 // Проверка залогирован пользователь или нет
 function check_auth():bool
 {
+    if (session()->has('user_id')) {
+        return true;
+    }
     return false;
+}
+
+// Выводит из массива lang_data по ключу key
+function _e($key): void
+{
+    echo PHPFramework\Language::get($key);
+}
+
+// Возвращает из массива lang_data по ключу key
+function __($key): string
+{
+    return PHPFramework\Language::get($key);
 }
