@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\AuthentificationUser;
 use App\Models\User;
+use PHPFramework\Auth;
 use PDOException;
 use PHPFramework\Pagination;
 
@@ -68,56 +69,59 @@ class UserController extends BaseController
 
     public function login()
     {
+
+        // $credentials = [
+        //     'email' => 'admin@mail.com',
+        //     'password' => '123456'
+        // ];
+
+        // $password = $credentials['password'];
+        // unset($credentials['password']);
+        // $field = array_key_first($credentials);
+        // $value = $credentials[$field];
+        // dump($field);
+        // dump($value);
+        // dump($password);
+
+        // $user = db()->findOne('users', $value, $field);
+        // dump($user);
+
         return view('user/login', [
             'title' => 'Login page',
-            // 'styles' => [
-            //     base_url("/assets/css/test.css")
-            // ],
-            // 'header_scripts' => [
-            //     base_url("/assets/js/test.js"),
-            //     base_url("/assets/js/test2.js")
-            // ],
-            // 'footer_scripts' => [
-            //     base_url("/assets/js/test3.js")
-            // ],
         ]);
     }
 
     // Метод отвечающий за аутентификацию пользователя
-    public function authentification()
+    public function auth()
     {
-        // дописать ошибку email-а
-        $email = $_POST['email'];
-        $password =  $_POST['password'];
-
-        $model = new AuthentificationUser();
+        $model = new User();
         $model->loadData();
 
-        if(!$model->validate()) {
-            session()->setFlash('error', 'Validation errors');
-            session()->set('form_errors', $model->getErrors());
-            session()->set('form_data', $model->attributes);
-            response()->redirect('/login');
-        } else {
-            // dump($email, $password);
-            // select * from users where email = 'user1@mail.com';
-            $user = db()->query("select * from users where email = ?", [$email])->getOne();
-            if (!$user) {
-                session()->setFlash('error', 'There is no user with such data');
-                response()->redirect('/login');
-            }
-            // dump(password_verify($password, $user['password']));
-            if(password_verify($password, $user['password'])) {
-                session()->set('user_id', $user['id']);
-                session()->setFlash('success', 'Welcome, ' . $user['name']);
-                response()->redirect('/dashboard');
-            } else {
-                session()->setFlash('error', 'There is no user with such data');
-                response()->redirect('/login');
-            }
+        if(!$model->validate($model->attributes, [
+            'required' => ['email', 'password'],
+        ])) {
+            echo json_encode(['status' => 'error', 'data' => $model->listErrors()]);
+            die;
         }
 
-        
+        if(Auth::login([
+            'email' => $model->attributes['email'],
+            'password' => $model->attributes['password'],
+        ])){
+            echo json_encode(['status' => 'success', 'data' => 'Success login',
+            'redirect' => base_href('/dashboard')]);
+        }else{
+            echo json_encode(['status' => 'error', 'data' => 'Wrong email or password']);
+        }
+        die;
+    }
+
+    public function logout()
+    {
+        // Проверка на наличие пользователя онлайн и его удаление
+        logout();
+        response()->redirect(base_href('/login'));
+
     }
 
     public function index()

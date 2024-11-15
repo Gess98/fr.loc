@@ -12,7 +12,7 @@ class HomeController extends BaseController
 
     public function dashboard() 
     {
-        return view('dashboard', ['title' => 'Dashboard page']);
+        return view('dashboard', ['title' => 'Dashboard page'],);
     }
 
     public function test() 

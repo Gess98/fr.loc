@@ -5,7 +5,7 @@
 
     <div class="row">
         <div class="col-md-6 offset-md-3">
-            <form action="<?= base_url('/login'); ?>" method="post" class="ajax-form2222">
+            <form action="<?= base_href('/login'); ?>" method="post" class="ajax-form">
 
                 <?= get_csrf_field(); ?>
 

@@ -160,10 +160,17 @@ function get_csrf_meta(): string
 // Проверка залогирован пользователь или нет
 function check_auth():bool
 {
-    if (session()->has('user_id')) {
-        return true;
-    }
-    return false;
+    return PHPFramework\Auth::isAuth();
+}
+
+function get_user()
+{
+    return \PHPFramework\Auth::user();
+}
+
+function logout()
+{
+    \PHPFramework\Auth::logout();
 }
 
 // Выводит из массива lang_data по ключу key
@@ -176,4 +183,45 @@ function _e($key): void
 function __($key): string
 {
     return PHPFramework\Language::get($key);
+}
+
+// Функция для отправки сообщений
+function send_mail(array $to, string $subject, string $tpl, array $data = [], array $attacments = []):bool
+{
+    $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+
+    try {
+        $mail->SMTPDebug = MAIL_SETTINGS['debug'];
+        $mail->isSMTP();
+        $mail->Host = MAIL_SETTINGS['host'];
+        $mail->SMTPAuth = MAIL_SETTINGS['auth'];
+        $mail->Username = MAIL_SETTINGS['username'];
+        $mail->Password = MAIL_SETTINGS['password'];
+        $mail->SMTPSecure = MAIL_SETTINGS['secure'];
+        $mail->Port = MAIL_SETTINGS['port'];
+
+        $mail->setFrom(MAIL_SETTINGS['from_email'], MAIL_SETTINGS['from_name']);
+        // Добавление адресатов
+        foreach ($to as $email) {
+            $mail->addAddress($email);
+        }
+        // Добавление вложений в письма
+        if ($attacments) {
+            foreach ($attacments as $attacment) {
+                $mail->addAttachment($attacment);
+            }
+        }
+
+        $mail->isHTML(MAIL_SETTINGS['is_html']);
+        $mail->CharSet = MAIL_SETTINGS['charset'];
+        $mail->Subject = $subject;
+        // Подключение шаблона
+        $mail->Body = view($tpl, $data, false);
+
+        return $mail->send();
+    } catch (Exception $e) {
+        error_log("[" . date('Y-m-d H:i:s'). "] Error: {$e->getMessage()}" . PHP_EOL . "File: {$e->getFile()}" . PHP_EOL . 
+        "Line: {$e->getLine()}" . PHP_EOL . '--------------------' . PHP_EOL, 3, ERROR_LOGS);
+        return false;
+    }
 }

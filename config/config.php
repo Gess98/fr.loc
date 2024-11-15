@@ -40,6 +40,22 @@ const DB_SETTINGS = [
     ]
 ];
 
+// Настройки для PHPMailer
+const MAIL_SETTINGS = [
+    'host' => 'smtp.gmail.com', // адресс сервера
+    'auth' => 'true', 
+    'username' => 'email@mail.com', // Email
+    'password' => 'xxxx xxxx xxxx xxxx', // Пароль SMTP
+    'secure' => 'tls',
+    'port' => '587',
+    'from_email' => 'zhorochka.sokolov@gmail.com',
+    'from_name' => 'fr.loc',
+    'is_html' => 'true', // Отправка email в формате HTML
+    'charset' => 'utf-8',
+    'debug' => 0, // Уровень отладки
+];
+
+// Настройки для пагинации
 const PAGINATION_SETTINGS = [
     'perPage' => 3,
     'midSize' => 2,

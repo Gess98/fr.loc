@@ -1,20 +1,22 @@
-a:2:{s:4:"data";s:821:"<ul class="navbar-nav me-auto mb-2 mb-lg-0 navbar-menu">
+a:2:{s:4:"data";s:853:"<ul class="navbar-nav me-auto mb-2 mb-lg-0 navbar-menu">
     <li class="nav-item">
         <a class="nav-link" aria-current="page" href="https://fr.loc/">Home</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="https://fr.loc/register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="https://fr.loc/login">Login</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="https://fr.loc/dashboard">Dashboard</a>
-    </li>
+
+            <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="https://fr.loc/register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="https://fr.loc/login">Login</a>
+        </li>
+    
     <li class="nav-item">
         <a class="nav-link" aria-current="page" href="https://fr.loc/users">Users</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" aria-current="page" href="https://fr.loc/posts">Posts</a>
     </li>
-</ul>";s:8:"end_time";i:1730233094;}
+    <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="https://fr.loc/contact">Contact</a>
+    </li>
+</ul>";s:8:"end_time";i:1731271740;}

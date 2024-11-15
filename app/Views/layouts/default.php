@@ -40,6 +40,18 @@
                 <?php $request_uri = uri_without_lang();?>
 
                 <ul class="navbar-nav">
+
+                    <?php if(check_auth()): ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Hello, <?= get_user()['name']; ?>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="<?= base_href("/logout");?>">Logout</a></li>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <?= app()->get('lang')['title']; ?>
@@ -53,14 +65,18 @@
                                     <li><a class="dropdown-item" href="<?= base_url("/{$k}{$request_uri}");?>"><?= $v['title'];?></a></li>
                                 <?php endif; ?>
                             <?php endforeach; ?>
-                            
                         </ul>
                     </li>
                 </ul>
-
             </div>
         </div>
     </nav>
+
+    <?php 
+        // dump(\PHPFramework\Auth::isAuth());
+        // dump(\PHPFramework\Auth::user());
+        // dump(get_user()['name']);
+    ?>
 
     <?php get_alerts(); ?>
     <!-- вывод вида -->
